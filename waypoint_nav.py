@@ -11,8 +11,8 @@ def set_initial_pose():
     pose = PoseWithCovarianceStamped()
     pose.header.frame_id = "map"
     pose.header.stamp = rospy.Time.now()
-    pose.pose.pose.position.x = 0.0
-    pose.pose.pose.position.y = 0.0
+    pose.pose.pose.position.x = -2.0
+    pose.pose.pose.position.y = -0.5
     pose.pose.pose.orientation.w = 1.0
     pose.pose.covariance[0] = 0.25
     pose.pose.covariance[7] = 0.25
