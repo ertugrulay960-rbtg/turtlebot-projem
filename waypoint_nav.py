@@ -8,7 +8,6 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 def set_initial_pose():
     pub = rospy.Publisher('/initialpose', PoseWithCovarianceStamped, queue_size=1)
     rospy.sleep(1)
-    
     pose = PoseWithCovarianceStamped()
     pose.header.frame_id = "map"
     pose.header.stamp = rospy.Time.now()
@@ -18,7 +17,6 @@ def set_initial_pose():
     pose.pose.covariance[0] = 0.25
     pose.pose.covariance[7] = 0.25
     pose.pose.covariance[35] = 0.06
-    
     pub.publish(pose)
     rospy.loginfo("Baslangic pozisyonu ayarlandi: (0, 0)")
     rospy.sleep(2)
@@ -34,10 +32,10 @@ def send_goal(client, x, y, point_num):
     rospy.loginfo(f"Nokta {point_num} hedefleniyor: ({x}, {y})")
     client.send_goal(goal)
 
-    finished = client.wait_for_result(rospy.Duration(60))
+    finished = client.wait_for_result(rospy.Duration(90))
 
     if not finished:
-        rospy.logwarn(f"Nokta {point_num} - timeout, iptal ediliyor")
+        rospy.logwarn(f"Nokta {point_num} - timeout, sonraki noktaya geciliyor")
         client.cancel_goal()
     else:
         state = client.get_state()
@@ -54,15 +52,15 @@ def main():
     rospy.loginfo("move_base bekleniyor...")
     client.wait_for_server()
 
-    set_initial_pose()  # Otomatik baslangic pozisyonu
+    set_initial_pose()
     rospy.loginfo("Baslaniyor!")
 
     waypoints = [
-        (0.5,  0.5),
-        (1.0, -0.5),
-        (-0.5, 1.0),
-        (-2.0,  0.0),
-        (-1.5, -1.5),
+        (0.491,  0.181),
+        (1.377,  1.014),
+        (2.809, -0.302),
+        (1.754, -1.057),
+        (0.515, -1.394),
     ]
 
     for i, (x, y) in enumerate(waypoints):
